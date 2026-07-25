@@ -7,5 +7,8 @@ python .\src\main.py
 cd ..\front
 npm run electron
 
+# Build usando Ng
+ng build --base-href ./
+
 # Rebuildar o executável do projeto
 npm run dist
