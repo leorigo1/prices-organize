@@ -6,3 +6,6 @@ python .\src\main.py
 # Iniciar o frontend
 cd ..\front
 npm run electron
+
+# Rebuildar o executável do projeto
+npm run dist

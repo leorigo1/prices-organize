@@ -1,13 +1,34 @@
+import os
+from pathlib import Path
+
+# Carrega variáveis de ambiente de `back/.env` (se existir) antes de
+# importar módulos que dependem de `OPENAI_API_KEY` durante a inicialização.
+env_path = Path(__file__).resolve().parents[1] / '.env'
+if env_path.exists():
+    for raw_line in env_path.read_text(encoding='utf-8').splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith('#'):
+            continue
+        if '=' in line:
+            k, v = line.split('=', 1)
+            k = k.strip(); v = v.strip()
+            if k:
+                os.environ.setdefault(k, v)
+
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from pathlib import Path
 import io
 import json
 import warnings
 import pandas as pd
 
+# Import do controlador OpenAI feito após carregar .env
+import openai_controller as _openai_controller
+
 app = Flask(__name__)
 CORS(app)
+# Register OpenAI blueprint (imported as top-level module to avoid relative import issues)
+app.register_blueprint(_openai_controller.bp)
 
 def processar_planilha(arquivo, nome_arquivo):
     """Processa arquivo Excel e retorna dados estruturados"""
