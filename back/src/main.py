@@ -21,6 +21,7 @@ import io
 import json
 import warnings
 import pandas as pd
+from openpyxl import load_workbook
 
 # Import do controlador OpenAI feito após carregar .env
 import openai_controller as _openai_controller
@@ -38,6 +39,7 @@ def processar_json_para_excel(json_bytes, nome_base):
 
         # Criar DataFrame
         df = pd.DataFrame(dados)
+        df = df.drop(columns=["indice"], errors="ignore")
 
         # Renomear colunas
         df = df.rename(columns={
@@ -55,7 +57,28 @@ def processar_json_para_excel(json_bytes, nome_base):
         df.to_excel(excel_buffer, index=False, engine='openpyxl')
         excel_buffer.seek(0)
 
-        return excel_buffer, None
+        # Abrir o arquivo gerado
+        wb = load_workbook(excel_buffer)
+        ws = wb.active
+
+        # Encontrar a coluna "Valor Un. Inicial"
+        coluna_valor = None
+        for coluna in ws[1]:
+            if coluna.value == "Valor Un. Inicial":
+                coluna_valor = coluna.column_letter
+                break
+
+        # Aplicar formato de duas casas decimais
+        if coluna_valor:
+            for cell in ws[coluna_valor][1:]:
+                cell.number_format = '0.00'
+
+        # Salvar novamente
+        novo_buffer = io.BytesIO()
+        wb.save(novo_buffer)
+        novo_buffer.seek(0)
+
+        return novo_buffer, None
 
     except Exception as e:
         import traceback
@@ -150,7 +173,7 @@ def processar_planilha(arquivo, nome_arquivo):
                 registro["descricao"] = str(linha["Item"]) if pd.notna(linha["Item"]) else ""
             if "Valor Un. Inicial" in df.columns:
                 try:
-                    valor = float(linha["Valor Un. Inicial"]) if pd.notna(linha["Valor Un. Inicial"]) else 0.0
+                    valor = float(linha["Valor Un. Inicial"]) / 100 if pd.notna(linha["Valor Un. Inicial"]) else 0.0
                 except (ValueError, TypeError):
                     valor = 0.0
                 registro["valor"] = valor
