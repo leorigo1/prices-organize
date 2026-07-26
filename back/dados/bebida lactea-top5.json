@@ -1,0 +1,52 @@
+[
+  {
+    "ano": 2025,
+    "assinatura": "26/08/2025",
+    "descricao": "Bebida Láctea - Fermentada, com polpa de fruta, em sabores de coco, morango, pêssego. A embalagem deverá conter externamente os dados de identificação, procedência, informações nutricionais, número do lote, data de validade. Deverá atender as especificações técnicas da anvisa e inmetro. Embalagem de 900 g. Prazo de validade de no mínimo 45 dias a partir da entrega do produto.",
+    "indice": 84,
+    "instrumento": "Contrato",
+    "numero": 80,
+    "orgao": "PM DE CRUZALTENSE",
+    "valor": 370
+  },
+  {
+    "ano": 2026,
+    "assinatura": "07/05/2026",
+    "descricao": "Bebida Láctea - Fermentada, com polpa de fruta, em sabores de coco, morango, pêssego. A embalagem deverá conter externamente os dados de identificação, procedência, informações nutricionais, número do lote, data de validade, deverá atender as especificações técnicas da ANVISA e Inmetro. Embalagem de 1l. Prazo de validade de no mínimo 45 dias a partir da entrega do produto.",
+    "indice": 75,
+    "instrumento": "Contrato",
+    "numero": 109,
+    "orgao": "PM DE CHIAPETTA",
+    "valor": 400
+  },
+  {
+    "ano": 2026,
+    "assinatura": "20/01/2026",
+    "descricao": "BEBIDA LÁCTEA: FERMENTADA, COM POLPA DE FRUTA, EM SABORES VARIADOS, PRODUTO DEVERÁ ATENDER AS ESPECIFICAÇÕES TÉCNICAS DA ANVISA E INMETRO. EMBALAGEM DE 1 LITRO. PRAZO DE VALIDADE DE NO MÍNIMO 45 DIAS A PARTIR DA ENTREGA DO PRODUTO.",
+    "indice": 59,
+    "instrumento": "Contrato",
+    "numero": 7,
+    "orgao": "PM DE CAMPOS BORGES",
+    "valor": 760
+  },
+  {
+    "ano": 2026,
+    "assinatura": "10/07/2026",
+    "descricao": "BEBIDA LÁCTEA: FERMENTADA, COM POLPA DE FRUTA, EM SABORES VARIADOS, PRODUTO DEVERÁ ATENDER AS ESPECIFICAÇÕES TÉCNICAS DA ANVISA E INMETRO. EMBALAGEM DE 1 LITRO. PRAZO DE VALIDADE DE NO MÍNIMO 45 DIAS A PARTIR DA ENTREGA DO PRODUTO.",
+    "indice": 62,
+    "instrumento": "Contrato",
+    "numero": 210,
+    "orgao": "PM DE CAMPOS BORGES",
+    "valor": 739
+  },
+  {
+    "ano": 2025,
+    "assinatura": "03/09/2025",
+    "descricao": "Bebida Láctea - Fermentada, com polpa de fruta, em sabores de coco, morango, pêssego. A embalagem deverá conter externamente os dados de identificação, procedência, informações nutricionais, número do lote, data de validade, deverá atender as especificações técnicas da ANVISA e Inmetro. Embalagem de 900g. Prazo de validade de no mínimo 45 dias a partir da entrega do produto.",
+    "indice": 85,
+    "instrumento": "Contrato",
+    "numero": 84,
+    "orgao": "PM DE CRUZALTENSE",
+    "valor": 840
+  }
+]

@@ -30,6 +30,39 @@ CORS(app)
 # Register OpenAI blueprint (imported as top-level module to avoid relative import issues)
 app.register_blueprint(_openai_controller.bp)
 
+def processar_json_para_excel(json_bytes, nome_base):
+    """Converte JSON de orçamentos em Excel com as colunas renomeadas"""
+    try:
+        # Ler JSON
+        dados = json.load(io.BytesIO(json_bytes))
+
+        # Criar DataFrame
+        df = pd.DataFrame(dados)
+
+        # Renomear colunas
+        df = df.rename(columns={
+            "orgao": "Órgão",
+            "instrumento": "Instrumento",
+            "numero": "Nr.",
+            "ano": "Ano",
+            "assinatura": "Assinatura",
+            "descricao": "Item",
+            "valor": "Valor Un. Inicial"
+        })
+
+        # Criar arquivo Excel em memória
+        excel_buffer = io.BytesIO()
+        df.to_excel(excel_buffer, index=False, engine='openpyxl')
+        excel_buffer.seek(0)
+
+        return excel_buffer, None
+
+    except Exception as e:
+        import traceback
+        print(f"Erro ao converter JSON para Excel: {str(e)}")
+        print(traceback.format_exc())
+        return None, str(e)
+
 def processar_planilha(arquivo, nome_arquivo):
     """Processa arquivo Excel e retorna dados estruturados"""
     try:
@@ -204,6 +237,50 @@ def debug_upload():
 def health():
     """Endpoint para verificar se o servidor está rodando"""
     return jsonify({"status": "ok"}), 200
+
+@app.route('/planilhar', methods=['POST'])
+def planilhar():
+    """Endpoint para converter JSON de orçamentos em Excel"""
+    try:
+        if 'arquivo' not in request.files:
+            return jsonify({"erro": "Nenhum arquivo enviado"}), 400
+
+        arquivo = request.files['arquivo']
+
+        if arquivo.filename == '':
+            return jsonify({"erro": "Arquivo vazio"}), 400
+
+        # Lê o conteúdo do arquivo JSON enviado
+        conteudo_bytes = arquivo.read()
+
+        if not conteudo_bytes:
+            return jsonify({"erro": "Arquivo enviado está vazio"}), 400
+
+        # Processa JSON e converte para Excel
+        excel_buffer, erro = processar_json_para_excel(conteudo_bytes, arquivo.filename)
+
+        if erro:
+            print(f"ERRO ao converter JSON para Excel: {erro}")
+            return jsonify({"erro": f"Erro ao processar arquivo: {erro}"}), 400
+
+        if excel_buffer is None:
+            return jsonify({"erro": "Nenhum dado foi extraído do arquivo"}), 400
+
+        # Nome do Excel baseado no nome do JSON original
+        nome_excel = Path(arquivo.filename).stem + '.xlsx'
+
+        return send_file(
+            excel_buffer,
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            as_attachment=True,
+            download_name=nome_excel
+        )
+
+    except Exception as e:
+        print(f"ERRO GERAL: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+        return jsonify({"erro": f"Erro no servidor: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8000)

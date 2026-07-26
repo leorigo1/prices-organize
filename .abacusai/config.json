@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -c \"\ndata = open(r'c:\\Users\\leonardo\\Documents\\GITHUB\\lcton\\front\\src\\app\\excel\\excel.ts', 'rb').read()\nprint(re…)"
+    ]
+  }
+}
